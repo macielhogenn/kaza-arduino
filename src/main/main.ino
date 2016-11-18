@@ -2,18 +2,17 @@
 #include <Thermistor.h>
 #include <Servo.h>
 
-#define LED_AQUECEDOR 13
-#define LED_AR_CONDICIONADO 12
-//#define BEEP 8
-#define SENSOR 2
-#define LAMPADA_EXTERNA 5
-#define LAMPADA_SEMI_EXTERNA 4
-#define LAMPADA_INTERNA 3
+#define LED_AQUECEDOR 2
+#define LED_AR_CONDICIONADO 3
+#define BEEP A2
+#define SENSOR 10
+#define LAMPADA_EXTERNA 11
+#define LAMPADA_SEMI_EXTERNA 12
+#define LAMPADA_INTERNA 13
 #define LDR A1
 
 Thermistor temp(0);
-LiquidCrystal lcd(11, 10, 9, 8, 7, 6);
-Servo servo;
+LiquidCrystal lcd(4, 5, 6, 7, 8, 9);
 
 void setup()
 {
@@ -21,19 +20,17 @@ void setup()
   Serial.begin(9600);
   pinMode(LED_AQUECEDOR, OUTPUT);
   pinMode(LED_AR_CONDICIONADO, OUTPUT);
-  //pinMode(BEEP, OUTPUT);
+  pinMode(BEEP, OUTPUT);
   pinMode(LAMPADA_EXTERNA, OUTPUT);
   pinMode(LAMPADA_SEMI_EXTERNA, OUTPUT);
   pinMode(LAMPADA_INTERNA, OUTPUT);
 
-//Mantem rele desligado assim que iniciar o programa
-  //digitalWrite(BEEP, LOW);
+  digitalWrite(BEEP, LOW);
   digitalWrite(LAMPADA_EXTERNA,HIGH);
   digitalWrite(LAMPADA_SEMI_EXTERNA, HIGH);
   digitalWrite(LAMPADA_INTERNA,HIGH);
 
   lcd.begin(16, 2);
-  //servo.attach(9);
 
 }
 
@@ -52,13 +49,13 @@ void loop()
   }
 
   if (digitalRead(SENSOR)){
-    //digitalWrite(BEEP, HIGH);
+    digitalWrite(BEEP, HIGH);
     Serial.println("Alarme");
   } else {
-     //digitalWrite(BEEP, LOW);
+    digitalWrite(BEEP, LOW);
   }
 
-  if (luminosity < 35) {
+  if (luminosity < 40) {
       digitalWrite(LAMPADA_EXTERNA,HIGH);
   } else {
       digitalWrite(LAMPADA_EXTERNA, LOW);
