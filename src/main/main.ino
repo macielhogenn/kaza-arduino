@@ -11,6 +11,8 @@
 #define LAMPADA_INTERNA 13
 #define LDR A1
 
+int dado;
+
 Thermistor temp(0);
 LiquidCrystal lcd(4, 5, 6, 7, 8, 9);
 
@@ -36,6 +38,25 @@ void setup()
 
 void loop()
 {
+  if(Serial.available() > 0){ //verifica se existe comunicação com a porta serial
+      dado = Serial.read();   //lê os dados da porta serial
+      switch(dado){
+        case 1: // Acionar lâmpada interna
+           digitalWrite(LAMPADA_INTERNA,HIGH);
+        break;
+        case 2: //Desativar lâmpada interna
+           digitalWrite(LAMPADA_INTERNA,LOW);
+         break;
+      case 3: //Acionar alarme
+        digitalWrite(BEEP, HIGH);
+        Serial.println("Alarme");
+        break;
+      case 4: //Desativar alarme
+        digitalWrite(BEEP, LOW);
+        break;
+    }
+  }
+  
   int temperature = temp.getTemp();
   float luminosity = analogRead(LDR);
   luminosity = (luminosity / 1024) * 100;
